@@ -31,3 +31,15 @@
 
 기술: Coroutine, IEnumerator, WaitForSeconds
 
+### 🪂 낙하 데미지 시스템
+설명: 플레이어가 일정 높이 이상에서 떨어졌을 때 낙하 거리만큼 물리 데미지를 받도록 처리하는 시스템입니다.
+
+기술: OnCollisionEnter, Rigidbody, velocity, 거리 계산, 데미지 전달
+
+#### 주요 기능
+플레이어가 떨어진 높이를 계산하여 데미지 적용
+임계 높이(fallThreshold) 이하의 낙하는 데미지 없음
+낙하 거리 초과분에 damageMultiplier를 곱해 데미지 계산
+PlayerCondition.TakePysicalDamage()를 통해 데미지 전달
+Rigidbody의 velocity.y를 통해 낙하 여부 판단
+
