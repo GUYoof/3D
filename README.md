@@ -38,8 +38,12 @@
 
 #### 주요 기능
 플레이어가 떨어진 높이를 계산하여 데미지 적용
+
 임계 높이(fallThreshold) 이하의 낙하는 데미지 없음
+
 낙하 거리 초과분에 damageMultiplier를 곱해 데미지 계산
+
 PlayerCondition.TakePysicalDamage()를 통해 데미지 전달
+
 Rigidbody의 velocity.y를 통해 낙하 여부 판단
 
