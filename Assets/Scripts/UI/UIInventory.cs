@@ -61,6 +61,8 @@ public class UIInventory : MonoBehaviour
 
         // 선택된 아이템 정보 UI 초기화
         ClearSelectedItemWindow();
+
+        gameObject.SetActive(false);
     }
 
     /// <summary>
