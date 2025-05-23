@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody _rigidbody;
 
     private Coroutine jumpBoostCoroutine; // 점프 부스트 코루틴 추적용
+    public Condition condition; // 점프 부스트 UI를 갱신할 Condition 컴포넌트
 
     private void Awake()
     {
@@ -111,18 +112,26 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void OnJump(InputAction.CallbackContext context)
     {
-        Debug.Log($"test {context.phase} {InputActionPhase.Started} {IsGruonded()}");
-        if (context.phase == InputActionPhase.Started && IsGruonded())
+        Debug.Log($"test {context.phase} {InputActionPhase.Started} {IsGrounded()}");
+         if (context.phase == InputActionPhase.Started && IsGrounded())
+    {
+        // 스태미나 사용 시도: 50만큼 사용
+        if (CharacterManager.Instance.Player.condition.UseStamina(50f))
         {
             Debug.Log("점프");
             _rigidbody.AddForce(Vector2.up * jumpPower, ForceMode.Impulse);
         }
+        else
+        {
+            Debug.Log("스태미나 부족으로 점프 불가");
+        }
+    }
     }
 
     /// <summary>
     /// 바닥 체크
     /// </summary>
-    bool IsGruonded()
+    bool IsGrounded()
     {
         Ray[] rays = new Ray[4]
         {
@@ -190,7 +199,13 @@ public class PlayerController : MonoBehaviour
     {
         jumpPower = baseJumpPower * 1.2f; // 점프력 2배 증가
         Debug.Log("Jump Boost ON");
+
+        // UI 갱신 요청
+        if (condition != null)
+            condition.StartJumpBoostUI(duration);
+
         yield return new WaitForSeconds(duration); // 지정된 시간만큼 대기
+        
         jumpPower = baseJumpPower; // 원래 점프력으로 복구
         Debug.Log("Jump Boost OFF");
     }
