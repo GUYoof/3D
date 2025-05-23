@@ -16,6 +16,8 @@ public enum ItemType
 public enum ConsumableType
 {
     Health,  // 체력 회복
+    Stamina, // 스테미나 회복
+    JumpBoost // 점프 부스트
 }
 
 // 소비 아이템의 상세 정보 (효과 종류 및 수치)

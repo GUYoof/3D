@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 // 상호작용 가능한 오브젝트에 필요한 기능 정의
@@ -28,11 +29,12 @@ public class ItemObject : MonoBehaviour, IInteractable
     /// </summary>
     public void OnInteract()
     {
-        //// 플레이어에 아이템 데이터 전달
-        //CharacterManager.Instance.Player.itemData = data;
 
-        //// 아이템 추가 이벤트 호출
-        //CharacterManager.Instance.Player.addItem?.Invoke();
+        // 플레이어에 아이템 데이터 전달
+        CharacterManager.Instance.Player.itemData = data;
+
+        // 아이템 추가 이벤트 호출
+        CharacterManager.Instance.Player.addItem?.Invoke();
 
         // 씬에서 오브젝트 제거
         Destroy(gameObject);

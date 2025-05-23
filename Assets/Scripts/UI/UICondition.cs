@@ -7,7 +7,6 @@ using UnityEngine;
 public class UICondition : MonoBehaviour
 {
     public Condition health;   // 체력 상태
-    public Condition hunger;   // 허기 상태
     public Condition stamina;  // 스태미너 상태
 
     /// <summary>

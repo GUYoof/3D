@@ -60,13 +60,13 @@ public class UIInventory : MonoBehaviour
         }
 
         // 선택된 아이템 정보 UI 초기화
-        ClearSelctedItemWindow();
+        ClearSelectedItemWindow();
     }
 
     /// <summary>
     /// 선택된 아이템 정보를 초기화하고 버튼을 비활성화
     /// </summary>
-    void ClearSelctedItemWindow()
+    void ClearSelectedItemWindow()
     {
         // 아이템 정보 텍스트 초기화
         selectedItemName.text = string.Empty;
@@ -113,8 +113,6 @@ public class UIInventory : MonoBehaviour
             return;
         }
 
-        Debug.Log($"[AddItem] 획득한 아이템: {data.name}");
-
         // 스택 가능한 아이템이면 기존 슬롯 중 수량이 덜 찬 슬롯 찾기
         if (data.canStack)
         {
@@ -122,7 +120,6 @@ public class UIInventory : MonoBehaviour
             if (slot != null)
             {
                 slot.quantity++;  // 수량 증가
-                Debug.Log($"[AddItem] 스택 아이템 추가됨: {data.name}, 수량: {slot.quantity}");
                 UpdateUI();       // UI 갱신
                 CharacterManager.Instance.Player.itemData = null; // 아이템 초기화
                 return;
@@ -225,11 +222,23 @@ public class UIInventory : MonoBehaviour
         selectedStatName.text = string.Empty;
         selectedStatValue.text = string.Empty;
 
-        // 아이템에 포함된 효과들을 이름과 값으로 표시 (줄바꿈 포함)
+        // 아이템에 포함된 효과들을 이름과 값으로 표시 (JumpBoost는 지속 시간으로 표시)
         for (int i = 0; i < selectedItem.consumables.Length; i++)
         {
-            selectedStatName.text += selectedItem.consumables[i].type.ToString() + "\n";
-            selectedStatValue.text += selectedItem.consumables[i].value.ToString() + "\n";
+            var effect = selectedItem.consumables[i];
+
+            selectedStatName.text += effect.type.ToString() + "\n";
+
+            if (effect.type == ConsumableType.JumpBoost)
+            {
+                // JumpBoost는 "5초간 점프 강화" 형식으로 표시
+                selectedStatValue.text += $"{effect.value}초간 점프 강화\n";
+            }
+            else
+            {
+                // 일반 회복 효과는 "+수치" 형식으로 표시
+                selectedStatValue.text += $"+{effect.value}\n";
+            }
         }
 
         // 아이템 타입에 따른 버튼 활성화 처리
@@ -244,17 +253,19 @@ public class UIInventory : MonoBehaviour
     {
         if (selectedItem.type == ItemType.Consumable)
         {
-            // 각 효과 타입에 따라 적용 처리
             for (int i = 0; i < selectedItem.consumables.Length; ++i)
             {
                 switch (selectedItem.consumables[i].type)
                 {
                     case ConsumableType.Health:
-                        condition.Heal(selectedItem.consumables[i].value);  // 체력 회복
+                        condition.Heal(selectedItem.consumables[i].value);
+                        break;
+                    case ConsumableType.Stamina:
+                        condition.Eat(selectedItem.consumables[i].value);
                         break;
                 }
             }
-            RemoveSelectedItem();  // 사용 후 아이템 제거 또는 수량 감소
+            RemoveSelectedItem();
         }
     }
 
@@ -281,7 +292,7 @@ public class UIInventory : MonoBehaviour
             selectedItem = null;
             slots[selectedItemIndex].item = null;
             selectedItemIndex = -1;
-            ClearSelctedItemWindow();  // UI 초기화
+            ClearSelectedItemWindow();  // UI 초기화
         }
 
         UpdateUI();  // UI 갱신

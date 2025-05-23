@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.EnhancedTouch;
 
 /// <summary>
 /// 데미지를 받을 수 있는 객체 인터페이스
@@ -44,6 +45,15 @@ public class PlayerCondition : MonoBehaviour, IDamagalbe
     public void Heal(float amount)
     {
         health.Add(amount);
+    }
+
+    /// <summary>
+    /// 스테미나를를 회복시킴
+    /// </summary>
+    /// <param name="amount">회복할 양</param>
+    public void Eat(float amount)
+    {
+        stamina.Add(amount);
     }
 
     /// <summary>

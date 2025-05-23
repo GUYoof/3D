@@ -40,6 +40,7 @@ public class ItemSlot : MonoBehaviour
     {
         icon.gameObject.SetActive(true);                         // 아이콘 표시
         icon.sprite = item.icon;                                 // 아이콘 이미지 설정
+        Debug.Log($"[ItemSlot] Setting icon: {item.displayName}, icon null? {item.icon == null}");
         quantityText.text = quantity > 1 ? quantity.ToString() : string.Empty; // 수량 표시 (1 이상일 때만)
 
         if (outline != null)
