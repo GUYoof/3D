@@ -253,19 +253,8 @@ public class UIInventory : MonoBehaviour
     {
         if (selectedItem.type == ItemType.Consumable)
         {
-            for (int i = 0; i < selectedItem.consumables.Length; ++i)
-            {
-                switch (selectedItem.consumables[i].type)
-                {
-                    case ConsumableType.Health:
-                        condition.Heal(selectedItem.consumables[i].value);
-                        break;
-                    case ConsumableType.Stamina:
-                        condition.Eat(selectedItem.consumables[i].value);
-                        break;
-                }
-            }
-            RemoveSelectedItem();
+            ItemEffectHandler.Apply(controller, condition, selectedItem); // 효과 처리 일원화
+            RemoveSelectedItem();  // 사용 후 제거
         }
     }
 
